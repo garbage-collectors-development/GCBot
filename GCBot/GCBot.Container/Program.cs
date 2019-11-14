@@ -1,12 +1,25 @@
 ﻿using System;
+using System.Threading.Tasks;
+using GCBot.Core;
+using GCBot.Core.Services;
+using GCBot.EntityFramework.Repositories;
+using GCBot.Services;
+using GCBot.Services.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace GCBot.Container
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var serviceCollection = new ServiceCollection();
+
+            serviceCollection.AddSingleton<IBackupService, BackupService>()
+                .AddSingleton<IBackupRepository, BackupRepository>();
+
+            Client client = new Client(serviceCollection);
+            await client.RunAsync();
         }
     }
 }
