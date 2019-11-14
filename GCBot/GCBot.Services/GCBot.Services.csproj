@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <ApplicationIcon />
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GCBot.Core\GCBot.Core.csproj" />
+    <ProjectReference Include="..\GCBot.Shared\GCBot.Shared.csproj" />
+  </ItemGroup>
+
+</Project>
