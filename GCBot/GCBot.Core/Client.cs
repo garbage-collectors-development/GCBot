@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using Discord;
@@ -35,8 +35,7 @@ namespace GCBot.Core
                 SocketClient.Log += Log;
                 await RegisterCommandsAsync();
 
-                var token = await File.ReadAllTextAsync("/home/julian/bot/token.txt"); // /home/julian/GCBot/token.txt
-                await SocketClient.LoginAsync(Discord.TokenType.Bot, token.Trim());
+                await SocketClient.LoginAsync(Discord.TokenType.Bot, Environment.GetEnvironmentVariable("token"));
                 await SocketClient.StartAsync();
 
                 await Task.Delay(-1);
