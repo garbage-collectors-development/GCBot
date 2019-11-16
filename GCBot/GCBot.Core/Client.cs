@@ -4,20 +4,32 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace GCBot.Core
 {
     public class Client
     {
         public IServiceProvider Services { get; }
-        public DiscordSocketClient SocketClient = new DiscordSocketClient();
+        public DiscordSocketClient SocketClient;
 
+        private IConfiguration _configuration;
+        
         // locals
         private readonly CommandService _commands = new CommandService();
-        public Client(ServiceCollection serviceDescriptors)
+        public Client(ServiceCollection serviceDescriptors, IConfiguration configuration)
         {
             if (serviceDescriptors == null) serviceDescriptors = new ServiceCollection();
+            _configuration = configuration;
+            
+            if (!Enum.TryParse(_configuration["Logging:LogLevel:Default"], out LogSeverity logLevel))
+            {
+                logLevel = LogSeverity.Info;
+            }
+            
+            SocketClient = new DiscordSocketClient(new DiscordSocketConfig{LogLevel = logLevel});
 
             Services = serviceDescriptors
                 .AddSingleton(SocketClient)
@@ -35,7 +47,7 @@ namespace GCBot.Core
                 SocketClient.Log += Log;
                 await RegisterCommandsAsync();
 
-                await SocketClient.LoginAsync(Discord.TokenType.Bot, Environment.GetEnvironmentVariable("token"));
+                await SocketClient.LoginAsync(Discord.TokenType.Bot, _configuration["token"]);
                 await SocketClient.StartAsync();
 
                 await Task.Delay(-1);
@@ -64,6 +76,7 @@ namespace GCBot.Core
             {
                 var context = new SocketCommandContext(SocketClient, msg);
                 var result = await _commands.ExecuteAsync(context, argPos, Services);
+             
                 if (!result.IsSuccess) return;
             }
         }

@@ -32,7 +32,7 @@ namespace GCBot.Container
                 .AddSingleton<IBackupRepository, BackupRepository>()
                 .AddSingleton(new BackupContext(""));
 
-            Client client = new Client(serviceCollection);
+            Client client = new Client(serviceCollection, config);
             await client.RunAsync();
         }
     }
