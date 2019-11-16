@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using GCBot.Core;
 using GCBot.Core.Services;
+using GCBot.EntityFramework;
 using GCBot.EntityFramework.Repositories;
 using GCBot.Services;
 using GCBot.Services.Repositories;
@@ -16,7 +17,8 @@ namespace GCBot.Container
             var serviceCollection = new ServiceCollection();
 
             serviceCollection.AddSingleton<IBackupService, BackupService>()
-                .AddSingleton<IBackupRepository, BackupRepository>();
+                .AddSingleton<IBackupRepository, BackupRepository>()
+                .AddSingleton(new BackupContext(""));
 
             Client client = new Client(serviceCollection);
             await client.RunAsync();
