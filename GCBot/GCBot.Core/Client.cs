@@ -15,11 +15,11 @@ namespace GCBot.Core
         public IServiceProvider Services { get; }
         public DiscordSocketClient SocketClient;
 
-        private IConfiguration _configuration;
+        private IConfigurationRoot _configuration;
         
         // locals
         private readonly CommandService _commands = new CommandService();
-        public Client(ServiceCollection serviceDescriptors, IConfiguration configuration)
+        public Client(ServiceCollection serviceDescriptors, IConfigurationRoot configuration)
         {
             if (serviceDescriptors == null) serviceDescriptors = new ServiceCollection();
             _configuration = configuration;
