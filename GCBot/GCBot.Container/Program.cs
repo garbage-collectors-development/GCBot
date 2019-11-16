@@ -16,12 +16,18 @@ namespace GCBot.Container
     {
         static async Task Main(string[] args)
         {
+            string env = Environment.GetEnvironmentVariable("ENVIRONMENT");
+            
             IConfiguration config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", true, true)
+                .AddJsonFile("appsettings.json", false, true)
+                .AddJsonFile($"appsettings.{env}.json", true, true)
+                .AddEnvironmentVariables()
                 .Build();
 
-            var serviceCollection = new ServiceCollection();
+            ServiceCollection serviceCollection = new ServiceCollection();
 
+            serviceCollection.AddSingleton(typeof(IConfiguration), config);
+            
             serviceCollection.AddSingleton<IBackupService, BackupService>()
                 .AddSingleton<IBackupRepository, BackupRepository>()
                 .AddSingleton(new BackupContext(""));
