@@ -40,7 +40,7 @@ namespace GCBot.Container
             
             serviceCollection.AddSingleton<IAttachmentService, AttachmentService>()
                 .AddSingleton<IExtensionRepository, ExtensionRepository>()
-                .AddDbContext<ExtensionContext>(builder => builder.UseMySql(config.GetConnectionString("Database")));
+                .AddDbContext<ExtensionContext>(b => b.UseMySql(config.GetConnectionString("Database")));
             
             Client client = new Client(serviceCollection, config);
             await client.RunAsync();
