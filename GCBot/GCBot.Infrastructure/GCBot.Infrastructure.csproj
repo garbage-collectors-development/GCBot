@@ -14,7 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GCBot.Shared\GCBot.Shared.csproj" />
+    <ProjectReference Include="..\GCBot.Models\GCBot.Models.csproj" />
+    <ProjectReference Include="..\GCBot.Services\GCBot.Services.csproj" />
   </ItemGroup>
 
 </Project>

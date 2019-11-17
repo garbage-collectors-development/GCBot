@@ -2,10 +2,10 @@
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
-using GCBot.Core.Services;
-using GCBot.Shared.Backup;
+using GCBot.Models.Backup;
+using GCBot.Services.Services;
 
-namespace GCBot.Core.Modules
+namespace GCBot.Infrastructure.Modules
 {
     public class BackupModule : ModuleBase
     {

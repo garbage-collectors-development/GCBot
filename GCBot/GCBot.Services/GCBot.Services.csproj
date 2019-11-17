@@ -8,8 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GCBot.Core\GCBot.Core.csproj" />
-    <ProjectReference Include="..\GCBot.Shared\GCBot.Shared.csproj" />
+    <ProjectReference Include="..\GCBot.Models\GCBot.Models.csproj" />
   </ItemGroup>
 
 </Project>
