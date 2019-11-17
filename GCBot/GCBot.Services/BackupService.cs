@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using GCBot.Core.Services;
 using GCBot.Services.Repositories;
-using GCBot.Shared.Backup;
+using GCBot.Models.Backup;
+using GCBot.Services.Services;
 
 namespace GCBot.Services
 {

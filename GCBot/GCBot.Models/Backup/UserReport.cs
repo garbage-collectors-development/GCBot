@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace GCBot.Shared.Backup
+namespace GCBot.Models.Backup
 {
     public class UserReport : Report<DateTime, int>
     {

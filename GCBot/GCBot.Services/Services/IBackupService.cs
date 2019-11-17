@@ -1,8 +1,8 @@
-﻿using GCBot.Shared.Backup;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using GCBot.Models.Backup;
 
-namespace GCBot.Core.Services
+namespace GCBot.Services.Services
 {
     public interface IBackupService
     {

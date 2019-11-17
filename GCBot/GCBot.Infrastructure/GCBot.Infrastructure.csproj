@@ -9,11 +9,13 @@
 
   <ItemGroup>
     <PackageReference Include="Discord.Net" Version="2.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.6" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GCBot.Shared\GCBot.Shared.csproj" />
+    <ProjectReference Include="..\GCBot.Models\GCBot.Models.csproj" />
+    <ProjectReference Include="..\GCBot.Services\GCBot.Services.csproj" />
   </ItemGroup>
 
 </Project>

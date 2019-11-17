@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace GCBot.Shared.Backup
+namespace GCBot.Models.Backup
 {
     public class DiscordReport : Report<uint, ChannelReport>
     {

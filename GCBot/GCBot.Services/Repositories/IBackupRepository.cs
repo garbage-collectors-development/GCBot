@@ -1,4 +1,4 @@
-﻿using GCBot.Shared.Backup;
+﻿using GCBot.Models.Backup;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

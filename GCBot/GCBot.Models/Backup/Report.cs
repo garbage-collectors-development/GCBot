@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GCBot.Shared.Backup
+namespace GCBot.Models.Backup
 {
     public abstract class Report<T, TS>
     {

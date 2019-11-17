@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GCBot.EntityFramework.Entities;
+using GCBot.Services.EntityFramework.Entities;
 using GCBot.Services.Repositories;
-using GCBot.Shared.Backup;
+using GCBot.Models.Backup;
 
-namespace GCBot.EntityFramework.Repositories
+namespace GCBot.Services.EntityFramework.Repositories
 {
     public class BackupRepository : IBackupRepository
     {

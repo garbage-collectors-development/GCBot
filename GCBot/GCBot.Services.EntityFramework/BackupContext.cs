@@ -1,7 +1,7 @@
-﻿using GCBot.EntityFramework.Entities;
+﻿using GCBot.Services.EntityFramework.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace GCBot.EntityFramework
+namespace GCBot.Services.EntityFramework
 {
     public class BackupContext : DbContext
     {

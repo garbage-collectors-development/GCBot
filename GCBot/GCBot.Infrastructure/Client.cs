@@ -1,23 +1,35 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
-namespace GCBot.Core
+namespace GCBot.Infrastructure
 {
     public class Client
     {
         public IServiceProvider Services { get; }
-        public DiscordSocketClient SocketClient = new DiscordSocketClient();
+        public DiscordSocketClient SocketClient;
 
+        private IConfigurationRoot _configuration;
+        
         // locals
         private readonly CommandService _commands = new CommandService();
-        public Client(ServiceCollection serviceDescriptors)
+        public Client(ServiceCollection serviceDescriptors, IConfigurationRoot configuration)
         {
             if (serviceDescriptors == null) serviceDescriptors = new ServiceCollection();
+            _configuration = configuration;
+            
+            if (!Enum.TryParse(_configuration["Logging:LogLevel:Default"], out LogSeverity logLevel))
+            {
+                logLevel = LogSeverity.Info;
+            }
+            
+            SocketClient = new DiscordSocketClient(new DiscordSocketConfig{LogLevel = logLevel});
 
             Services = serviceDescriptors
                 .AddSingleton(SocketClient)
@@ -35,8 +47,7 @@ namespace GCBot.Core
                 SocketClient.Log += Log;
                 await RegisterCommandsAsync();
 
-                var token = await File.ReadAllTextAsync("/home/julian/bot/token.txt"); // /home/julian/GCBot/token.txt
-                await SocketClient.LoginAsync(Discord.TokenType.Bot, token.Trim());
+                await SocketClient.LoginAsync(Discord.TokenType.Bot, _configuration["token"]);
                 await SocketClient.StartAsync();
 
                 await Task.Delay(-1);
@@ -65,6 +76,7 @@ namespace GCBot.Core
             {
                 var context = new SocketCommandContext(SocketClient, msg);
                 var result = await _commands.ExecuteAsync(context, argPos, Services);
+             
                 if (!result.IsSuccess) return;
             }
         }

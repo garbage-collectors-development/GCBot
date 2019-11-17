@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace GCBot.Shared.Backup
+namespace GCBot.Services.EntityFramework.Entities
 {
-    public class UserMessage
+    public class Message
     {
         public uint Id { get; set; }
         public DateTime DateSent { get; set; }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GCBot.Shared.Backup
+namespace GCBot.Models.Backup
 {
     public struct DateRange
     {
