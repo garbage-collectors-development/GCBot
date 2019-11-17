@@ -13,7 +13,6 @@ namespace GCBot.Services.EntityFramework.Repositories
         public AllowedExtensionRepository(AllowedExtensionContext context)
         {
             _context = context;
-            _context.Database.EnsureCreated();
         }
 
         public IQueryable<Extension> GetAll()
