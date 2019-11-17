@@ -3,10 +3,10 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
-using GCBot.Core.Services;
+using GCBot.Services.Services;
 using Microsoft.EntityFrameworkCore.Internal;
 
-namespace GCBot.Core.Modules
+namespace GCBot.Infrastructure.Modules
 {
     [Group("ext")]
     [Summary("Commands used to manage allowed message attachment extensions.")]

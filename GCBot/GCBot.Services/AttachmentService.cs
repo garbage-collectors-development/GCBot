@@ -1,29 +1,26 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Discord;
-using Discord.WebSocket;
-using GCBot.Core.Services;
+using GCBot.Models;
 using GCBot.Services.Repositories;
-using GCBot.Shared;
+using GCBot.Services.Services;
 
 namespace GCBot.Services
 {
     public class AttachmentService : IAttachmentService
     {
-        private readonly IExtensionRepository _extensionRepository;
+        private readonly IAllowedExtensionRepository _allowedExtensionRepository;
 
-        public AttachmentService(IExtensionRepository repository)
+        public AttachmentService(IAllowedExtensionRepository repository)
         {
-            _extensionRepository = repository;
+            _allowedExtensionRepository = repository;
         }
 
-
-        public IEnumerable<AllowedExtension> GetAllAllowedExtensions()
+        public IEnumerable<Extension> GetAllAllowedExtensions()
         {
-            return _extensionRepository.GetAll().ToList();
+            return _allowedExtensionRepository.GetAll().ToList();
         }
 
         /// <summary>
@@ -53,19 +50,19 @@ namespace GCBot.Services
         /// <returns>Returns true if the extension was added, otherwise returns false if the extension exists</returns>
         public bool WhitelistExtension(string extension)
         {
-            if(_extensionRepository.ExtensionExists(extension))
+            if(_allowedExtensionRepository.ExtensionExists(extension))
             {
                 return false;
             }
             
-            _extensionRepository.Create(new AllowedExtension() {Value = extension.Trim('.').ToLowerInvariant()});
+            _allowedExtensionRepository.Create(new Extension() {Value = extension.Trim('.').ToLowerInvariant()});
             
             return true;
         }
         
         public void BlacklistExtension(string extension)
         {
-            _extensionRepository.Delete(extension);
+            _allowedExtensionRepository.Delete(extension);
         }
 
         private bool AreAttachmentsAllowed(IEnumerable<Attachment> attachments)

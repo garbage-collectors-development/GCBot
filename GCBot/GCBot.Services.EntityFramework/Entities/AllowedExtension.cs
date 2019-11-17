@@ -1,8 +1,6 @@
-using GCBot.Shared;
-
-namespace GCBot.EntityFramework.Entities
+namespace GCBot.Services.EntityFramework.Entities
 {
-    public class Extension
+    public class AllowedExtension
     {
         public int Id { get; set; }
         public string Value { get; set; }

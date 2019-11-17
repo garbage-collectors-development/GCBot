@@ -39,8 +39,8 @@ namespace GCBot.Container
                 .AddSingleton(new BackupContext(""));
             
             serviceCollection.AddSingleton<IAttachmentService, AttachmentService>()
-                .AddSingleton<IExtensionRepository, ExtensionRepository>()
-                .AddDbContext<ExtensionContext>(b => b.UseMySql(config.GetConnectionString("Database")));
+                .AddSingleton<IAllowedExtensionRepository, AllowedExtensionRepository>()
+                .AddDbContext<AllowedExtensionContext>(b => b.UseMySql(config.GetConnectionString("Database")));
             
             Client client = new Client(serviceCollection, config);
             await client.RunAsync();

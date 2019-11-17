@@ -1,17 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Discord;
-using Discord.WebSocket;
-using GCBot.Shared;
+using GCBot.Models;
 
-namespace GCBot.Core.Services
+namespace GCBot.Services.Services
 {
     public interface IAttachmentService
     {
-        IEnumerable<AllowedExtension> GetAllAllowedExtensions();
+        IEnumerable<Extension> GetAllAllowedExtensions();
         bool WhitelistExtension(string extension);
-        Task<bool> VerifyAttachmentExtensions(SocketUserMessage msg);
         void BlacklistExtension(string extension);
     }
 }
