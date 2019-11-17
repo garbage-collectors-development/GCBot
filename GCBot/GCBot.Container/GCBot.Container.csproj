@@ -10,8 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GCBot.Core\GCBot.Core.csproj" />
-    <ProjectReference Include="..\GCBot.EntityFramework\GCBot.EntityFramework.csproj" />
+    <ProjectReference Include="..\GCBot.Infrastructure\GCBot.Infrastructure.csproj" />
+    <ProjectReference Include="..\GCBot.Services.EntityFramework\GCBot.Services.EntityFramework.csproj" />
     <ProjectReference Include="..\GCBot.Services\GCBot.Services.csproj" />
   </ItemGroup>
 

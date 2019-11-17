@@ -6,7 +6,7 @@ using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace GCBot.Core
+namespace GCBot.Infrastructure
 {
     public class Client
     {

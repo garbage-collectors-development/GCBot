@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
-using GCBot.Core;
-using GCBot.Core.Services;
-using GCBot.EntityFramework;
-using GCBot.EntityFramework.Repositories;
+using GCBot.Infrastructure;
+using GCBot.Services.EntityFramework;
+using GCBot.Services.EntityFramework.Repositories;
 using GCBot.Services;
 using GCBot.Services.Repositories;
+using GCBot.Services.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GCBot.Container
