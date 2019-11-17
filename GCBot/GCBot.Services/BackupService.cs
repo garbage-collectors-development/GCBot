@@ -57,7 +57,11 @@ namespace GCBot.Services
             GenerateDiscordReport(0, dateRange); // this should be the default discord ID
 
         public UserReport GenerateUserReport(uint userId, DateRange dateRange)
-        {
+        { 
+            var report = new UserReport(userId,dateRange)
+            {
+                
+            };
             throw new NotImplementedException();
 
         }

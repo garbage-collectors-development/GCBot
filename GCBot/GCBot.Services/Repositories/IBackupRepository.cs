@@ -7,7 +7,9 @@ namespace GCBot.Services.Repositories
     public interface IBackupRepository
     {
         Task AddMessageAsync(UserMessage message);
-        IEnumerable<UserMessage> GetMessagesByUser(DateRange date, ulong id);
-        IEnumerable<UserMessage> GetMessagesByChannel(DateRange date, ulong channel);
+        IEnumerable<UserMessage> GetMessagesByUser(DateRange range, ulong id);
+        IEnumerable<UserMessage> GetMessagesByChannel(DateRange range, ulong channel);
+        int GetNumberOfMessagesByUser(DateRange range, ulong id);
+        int GetNumberOfMessagesByChannel(DateRange range, ulong channel);
     }
 }
