@@ -33,7 +33,7 @@ namespace GCBot.Container
             ServiceCollection serviceCollection = new ServiceCollection();
 
             serviceCollection.AddSingleton(typeof(IConfigurationRoot), config);
-            
+
             serviceCollection.AddSingleton<IBackupService, BackupService>()
                 .AddSingleton<IBackupRepository, BackupRepository>()
                 .AddSingleton(new BackupContext(""));
