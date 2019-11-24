@@ -55,6 +55,10 @@ namespace GCBot.Infrastructure
             
             _messageHandler = new MessageHandler(_services, _socketClient, _commands, _botConfigStore);
             ((EFConfigStore<GcBotConfig, GcGuild, GcChannel, GcUser>) _botConfigStore).Services = _services;
+            
+            // The uber-context is how we can create the database using a single database with multiple contexts
+            // It is only used for database creation and not mean to be injected or referenced
+            new GcDatabaseInitContext(_applicationConfiguration.GetConnectionString("Database")).Database.EnsureCreated();
         }
 
         /// <summary>

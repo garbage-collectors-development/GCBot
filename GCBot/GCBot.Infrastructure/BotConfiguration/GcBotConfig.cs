@@ -10,8 +10,12 @@ namespace GCBot.Infrastructure.BotConfiguration
     {
         public char CommandPrefix { get; set; } = Client.DefaultCommandPrefix;
     }
-    public sealed class GcBotConfig : EFBaseConfigContext<GcGuild, GcChannel, GcUser>
+    public class GcBotConfig : EFBaseConfigContext<GcGuild, GcChannel, GcUser>
     {
+        public GcBotConfig() : base(new DbContextOptions<GcBotConfig>())
+        {
+        }
+
         public GcBotConfig(DbContextOptions options) : base(options)
         {
         }
