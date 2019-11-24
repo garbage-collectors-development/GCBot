@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using Discord.Addons.SimplePermissions;
 using Discord.Commands;
@@ -72,6 +73,18 @@ namespace GCBot.Infrastructure
 
         private async Task ValidateMessageAttachments(SocketMessage msg)
         {
+            using (GcBotConfig config = _configStore.Load())
+            {
+                if (!(msg is SocketUserMessage userMsg)) return;
+                if (!(userMsg.Author is SocketGuildUser user)) return;
+                
+                GcGuild guild = config.Guilds.FirstOrDefault(g => g.GuildId == user.Guild.Id);
+                if (guild == null) return;
+
+                bool userCanBypass = user.Roles.Any(r => guild.AdminRole == r.Id || guild.ModRole == r.Id);
+                if (userCanBypass) return;
+            }
+
             if (msg.ContainsIllegalExtension(_attachmentService.GetAllAllowedExtensions()))
             {
                 await msg.DeleteAsync();
