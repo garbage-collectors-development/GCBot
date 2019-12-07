@@ -8,7 +8,7 @@ namespace GCBot.Services.Services
     public interface IAttachmentService
     {
         IEnumerable<Extension> GetAllAllowedExtensions();
-        bool WhitelistExtension(string extension);
+        bool WhitelistExtension(string extension, ulong userId);
         void BlacklistExtension(string extension);
     }
 }

@@ -68,7 +68,7 @@ namespace GCBot.Infrastructure.Modules
         [Permission(MinimumPermission.ModRole)]
         public async Task AddExtension(string extension)
         {
-            _service.WhitelistExtension(extension);
+            _service.WhitelistExtension(extension, Context.User.Id);
             await ReplyAsync($"Files with the extension `{extension}` can now be posted by anyone.");
         }
 

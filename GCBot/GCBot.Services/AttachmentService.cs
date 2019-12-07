@@ -27,15 +27,21 @@ namespace GCBot.Services
         /// Adds the given extension to the whitelist for uploaded attachments.
         /// </summary>
         /// <param name="extension"></param>
+        /// <param name="userId"></param>
         /// <returns>Returns true if the extension was added, otherwise returns false if the extension exists</returns>
-        public bool WhitelistExtension(string extension)
+        public bool WhitelistExtension(string extension, ulong userId)
         {
             if(_allowedExtensionRepository.ExtensionExists(extension))
             {
                 return false;
             }
             
-            _allowedExtensionRepository.Create(new Extension() {Value = extension.Trim('.').ToLowerInvariant()});
+            _allowedExtensionRepository.Create(new Extension()
+            {
+                Value = extension.Trim('.').ToLowerInvariant(), 
+                AllowedByUserId = userId, 
+                DateAllowed = DateTime.Now
+            });
             
             return true;
         }
