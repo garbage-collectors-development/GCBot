@@ -2,6 +2,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Discord;
+using Discord.Addons.SimplePermissions;
 using Discord.Commands;
 using GCBot.Services.Services;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -25,6 +26,7 @@ namespace GCBot.Infrastructure.Modules
         [Command]
         // This attribute makes it so the command doesn't appear in the help list
         [Name("")]
+        [Permission(MinimumPermission.Everyone)]
         public async Task PrintCommands()
         {
             ModuleInfo module = _commandService.Modules.FirstOrDefault(mi => mi.Name == ((NameAttribute) this.GetType().GetCustomAttribute(typeof(NameAttribute))).Text);
@@ -63,6 +65,7 @@ namespace GCBot.Infrastructure.Modules
         [Command("add")]
         [Alias("whitelist")]
         [Summary("Allows files with this extension")]
+        [Permission(MinimumPermission.ModRole)]
         public async Task AddExtension(string extension)
         {
             _service.WhitelistExtension(extension);
@@ -72,6 +75,7 @@ namespace GCBot.Infrastructure.Modules
         [Command("remove")]
         [Alias("rem", "blacklist")]
         [Summary("Disallows files with this extension")]
+        [Permission(MinimumPermission.ModRole)]
         public async Task RemoveExtension(string extension)
         {
             _service.BlacklistExtension(extension);
@@ -81,6 +85,7 @@ namespace GCBot.Infrastructure.Modules
         [Command("list")]
         [Alias("all")]
         [Summary("Show all allowed file extensions")]
+        [Permission(MinimumPermission.Everyone)]
         public async Task ListExtensions()
         {
             var extensions = _service.GetAllAllowedExtensions();
