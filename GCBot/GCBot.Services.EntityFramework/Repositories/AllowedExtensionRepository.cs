@@ -17,13 +17,13 @@ namespace GCBot.Services.EntityFramework.Repositories
 
         public IQueryable<Extension> GetAll()
         {
-            return _context.AllowedExtensions.Select(at => new Extension(){Id = at.Id, Value = at.Value});
+            return _context.AllowedExtensions.Select(at => new Extension(){Value = at.Value});
         }
 
         public Extension GetById(int id)
         {
             AllowedExtension allowedExtension = _context.AllowedExtensions.FirstOrDefault(at => at.Id == id);
-            return allowedExtension == null ? null : new Extension(){Id = allowedExtension.Id, Value = allowedExtension.Value};
+            return allowedExtension == null ? null : new Extension(){Value = allowedExtension.Value};
         }
         
         public void Delete(string ext)
@@ -40,7 +40,7 @@ namespace GCBot.Services.EntityFramework.Repositories
         
         public bool ExtensionExists(Extension extension)
         {
-            AllowedExtension ext = _context.AllowedExtensions.FirstOrDefault(s => s.Id == extension.Id && s.Value.Equals(extension.Value));
+            AllowedExtension ext = _context.AllowedExtensions.FirstOrDefault(s => s.Value.Equals(extension.Value));
             return ext != null;
         }
 
