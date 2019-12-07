@@ -42,6 +42,16 @@ namespace GCBot.Services.EntityFramework.Repositories
             });
         }
 
+        public int GetNumberOfMessagesByUser(DateRange range, ulong id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetNumberOfMessagesByChannel(DateRange range, ulong channel)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task AddMessageAsync(UserMessage message)
         {
             await _context.Messages.AddAsync(new Message()

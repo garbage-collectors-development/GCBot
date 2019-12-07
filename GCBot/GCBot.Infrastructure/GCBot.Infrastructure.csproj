@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GCBot.Models\GCBot.Models.csproj" />
+    <ProjectReference Include="..\GCBot.Services.EntityFramework\GCBot.Services.EntityFramework.csproj" />
     <ProjectReference Include="..\GCBot.Services\GCBot.Services.csproj" />
   </ItemGroup>
 
