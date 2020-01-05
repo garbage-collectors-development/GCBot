@@ -8,9 +8,9 @@ namespace GCBot.Services.EntityFramework.Repositories
 {
     public class AllowedExtensionRepository : IAllowedExtensionRepository
     {
-        private readonly AllowedExtensionContext _context;
+        private readonly GCContext _context;
 
-        public AllowedExtensionRepository(AllowedExtensionContext context)
+        public AllowedExtensionRepository(GCContext context)
         {
             _context = context;
         }
