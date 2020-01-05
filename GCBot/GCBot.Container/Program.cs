@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using GCBot.Infrastructure;
 using GCBot.Services.EntityFramework;
@@ -32,11 +32,15 @@ namespace GCBot.Container
             ServiceCollection serviceCollection = new ServiceCollection();
 
             serviceCollection.AddSingleton(typeof(IConfigurationRoot), config);
-            
+
             serviceCollection.AddSingleton<IBackupService, BackupService>()
                 .AddSingleton<IBackupRepository, BackupRepository>()
-                .AddSingleton(new GCContext(""));
-
+                .AddSingleton(new BackupContext(""));
+            
+            serviceCollection.AddSingleton<IAttachmentService, AttachmentService>()
+                .AddSingleton<IAllowedExtensionRepository, AllowedExtensionRepository>()
+                .AddDbContext<AllowedExtensionContext>(b => b.UseMySql(config.GetConnectionString("Database")));
+            
             Client client = new Client(serviceCollection, config);
             await client.RunAsync();
         }

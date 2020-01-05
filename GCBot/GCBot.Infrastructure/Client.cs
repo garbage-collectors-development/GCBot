@@ -1,9 +1,18 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using Discord;
+using Discord.Addons.SimplePermissions;
 using Discord.Commands;
 using Discord.WebSocket;
+using GCBot.Models;
+using GCBot.Services.Services;
+using GCBot.Infrastructure.BotConfiguration;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -12,69 +21,61 @@ namespace GCBot.Infrastructure
 {
     public class Client
     {
-        public IServiceProvider Services { get; }
-        public DiscordSocketClient SocketClient;
+        public const char DefaultCommandPrefix = '$';
 
-        private IConfigurationRoot _configuration;
-        
+        private readonly DiscordSocketClient _socketClient;
+        private readonly MessageHandler _messageHandler; 
+        private readonly IServiceProvider _services;
+        private readonly IConfigStore<GcBotConfig> _botConfigStore;
+        private readonly IConfigurationRoot _applicationConfiguration;
         // locals
         private readonly CommandService _commands = new CommandService();
-        public Client(ServiceCollection serviceDescriptors, IConfigurationRoot configuration)
+
+        public Client(ServiceCollection serviceDescriptors, IConfigurationRoot applicationConfiguration)
         {
             if (serviceDescriptors == null) serviceDescriptors = new ServiceCollection();
-            _configuration = configuration;
+            _applicationConfiguration = applicationConfiguration;
             
-            if (!Enum.TryParse(_configuration["Logging:LogLevel:Default"], out LogSeverity logLevel))
+            if (!Enum.TryParse(_applicationConfiguration["Logging:LogLevel:Default"], out LogSeverity logLevel))
             {
                 logLevel = LogSeverity.Info;
             }
-            
-            SocketClient = new DiscordSocketClient(new DiscordSocketConfig{LogLevel = logLevel});
 
-            Services = serviceDescriptors
-                .AddSingleton(SocketClient)
+            _botConfigStore = new EFConfigStore<GcBotConfig, GcGuild, GcChannel, GcUser>(_commands, Log);
+            
+            _socketClient = new DiscordSocketClient(new DiscordSocketConfig{LogLevel = logLevel});
+
+            _services = serviceDescriptors
+                .AddSingleton(_socketClient)
                 .AddSingleton(_commands)
+                .AddSingleton(new PermissionsService(_botConfigStore, _commands, _socketClient, Log))
+                .AddSingleton(_botConfigStore)
+                .AddDbContext<GcBotConfig>(options => options.UseMySql(_applicationConfiguration.GetConnectionString("Database")))
                 .BuildServiceProvider();
+            
+            _messageHandler = new MessageHandler(_services, _socketClient, _commands, _botConfigStore);
+            ((EFConfigStore<GcBotConfig, GcGuild, GcChannel, GcUser>) _botConfigStore).Services = _services;
+            
+            // The uber-context is how we can create the database using a single database with multiple contexts
+            // It is only used for database creation and not mean to be injected or referenced
+            new GcDatabaseInitContext(_applicationConfiguration.GetConnectionString("Database")).Database.EnsureCreated();
         }
 
         public async Task RunAsync()
         {
             try
             {
-                SocketClient.Log += Log;
-                await RegisterCommandsAsync();
+                _socketClient.Log += Log;
+                await _messageHandler.RegisterCommandsAsync();
 
-                await SocketClient.LoginAsync(Discord.TokenType.Bot, _configuration["token"]);
-                await SocketClient.StartAsync();
-
+                await _socketClient.LoginAsync(Discord.TokenType.Bot, _applicationConfiguration["token"]);
+                await _socketClient.StartAsync();
+                
                 await Task.Delay(-1);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-            }
-        }
-
-        private async Task RegisterCommandsAsync()
-        {
-            SocketClient.MessageReceived += HandleCommandAsync;
-            await _commands.AddModulesAsync(GetType().Assembly, Services);
-        }
-
-        private async Task HandleCommandAsync(SocketMessage arg)
-        {
-            var msg = arg as SocketUserMessage;
-            int argPos = 0;
-
-            if (msg is null) return;
-
-
-            if (!msg.Author.IsBot && msg.HasCharPrefix('$', ref argPos))
-            {
-                var context = new SocketCommandContext(SocketClient, msg);
-                var result = await _commands.ExecuteAsync(context, argPos, Services);
-             
-                if (!result.IsSuccess) return;
             }
         }
 
@@ -84,4 +85,5 @@ namespace GCBot.Infrastructure
             return Task.CompletedTask;
         }
     }
+
 }
