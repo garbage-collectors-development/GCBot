@@ -1,11 +1,14 @@
-using GCBot.Services.EntityFramework.Entities;
+﻿using GCBot.Services.EntityFramework.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace GCBot.Services.EntityFramework
 {
-    public class AllowedExtensionContext : DbContext
+    public class GCContext : DbContext
     {
-        public AllowedExtensionContext(DbContextOptions<AllowedExtensionContext> options) : base(options) {}
+
+        public GCContext(DbContextOptions<GCContext> options) : base(options) { }
+
+        public DbSet<Message> Messages { get; set; }
         
         public DbSet<AllowedExtension> AllowedExtensions { get; set; }
 
