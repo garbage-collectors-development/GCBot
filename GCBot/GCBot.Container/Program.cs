@@ -5,6 +5,7 @@ using GCBot.Services.EntityFramework;
 using GCBot.Services.EntityFramework.Repositories;
 using GCBot.Services;
 using GCBot.Services.Repositories;
+using GCBot.Services.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,15 +34,14 @@ namespace GCBot.Container
 
             serviceCollection.AddSingleton(typeof(IConfigurationRoot), config);
 
+            serviceCollection.AddDbContext<GCContext>(b => b.UseMySql(config.GetConnectionString("Database")));
             serviceCollection.AddSingleton<IBackupService, BackupService>()
-                .AddSingleton<IBackupRepository, BackupRepository>()
-                .AddSingleton(new BackupContext(""));
-            
+                .AddSingleton<IBackupRepository, BackupRepository>();
+
             serviceCollection.AddSingleton<IAttachmentService, AttachmentService>()
-                .AddSingleton<IAllowedExtensionRepository, AllowedExtensionRepository>()
-                .AddDbContext<AllowedExtensionContext>(b => b.UseMySql(config.GetConnectionString("Database")));
-            
-            Client client = new Client(serviceCollection, config);
+                .AddSingleton<IAllowedExtensionRepository, AllowedExtensionRepository>();
+
+            var client = new Client(serviceCollection, config);
             await client.RunAsync();
         }
     }
