@@ -34,13 +34,13 @@ namespace GCBot.Container
 
             serviceCollection.AddSingleton(typeof(IConfigurationRoot), config);
 
-            serviceCollection.AddDbContext<GCContext>(b => b.UseMySql(config.GetConnectionString("Database")));
+            serviceCollection.AddDbContext<GCContext>(b => b.UseSqlServer(config.GetConnectionString("Database")));
             serviceCollection.AddSingleton<IBackupService, BackupService>()
                 .AddSingleton<IBackupRepository, BackupRepository>();
 
             serviceCollection.AddSingleton<IAttachmentService, AttachmentService>()
                 .AddSingleton<IAllowedExtensionRepository, AllowedExtensionRepository>();
-
+            
             var client = new Client(serviceCollection, config);
             await client.RunAsync();
         }

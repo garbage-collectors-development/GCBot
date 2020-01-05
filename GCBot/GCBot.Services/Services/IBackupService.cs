@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using GCBot.Models.Backup;
 
-namespace GCBot.Services
+namespace GCBot.Services.Services
 {
     public interface IBackupService
     {
@@ -10,7 +10,7 @@ namespace GCBot.Services
         Task BackupMessagesAsync(IEnumerable<UserMessage> userMessages);
 
         DiscordReport GenerateDiscordReport(DateRange dateRange);
-        ChannelReport GenerateChannelReport(uint channelId, DateRange dateRange);
-        UserReport GenerateUserReport(uint userId, DateRange dateRange);
+        ChannelReport GenerateChannelReport(ulong channelId, DateRange dateRange);
+        UserReport GenerateUserReport(ulong userId, DateRange dateRange);
     }
 }

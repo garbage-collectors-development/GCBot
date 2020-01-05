@@ -50,15 +50,11 @@ namespace GCBot.Infrastructure
                 .AddSingleton(_commands)
                 .AddSingleton(new PermissionsService(_botConfigStore, _commands, _socketClient, Log))
                 .AddSingleton(_botConfigStore)
-                .AddDbContext<GcBotConfig>(options => options.UseMySql(_applicationConfiguration.GetConnectionString("Database")))
+                .AddDbContext<GcBotConfig>(options => options.UseSqlServer(_applicationConfiguration.GetConnectionString("Database")))
                 .BuildServiceProvider();
             
             _messageHandler = new MessageHandler(_services, _socketClient, _commands, _botConfigStore);
             ((EFConfigStore<GcBotConfig, GcGuild, GcChannel, GcUser>) _botConfigStore).Services = _services;
-            
-            // The uber-context is how we can create the database using a single database with multiple contexts
-            // It is only used for database creation and not mean to be injected or referenced
-            new GcDatabaseInitContext(_applicationConfiguration.GetConnectionString("Database")).Database.EnsureCreated();
         }
 
         public async Task RunAsync()

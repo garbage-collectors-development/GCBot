@@ -2,9 +2,9 @@
 
 namespace GCBot.Models.Backup
 {
-    public class ChannelReport : Report<uint, UserReport>
+    public class ChannelReport : Report<ulong, UserReport>
     {
-        public ChannelReport(uint channelId, DateRange dateRange) : base(dateRange, channelId)
+        public ChannelReport(ulong channelId, DateRange dateRange) : base(dateRange, channelId)
         { }
 
         public override int TotalMessages =>

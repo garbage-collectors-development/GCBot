@@ -2,7 +2,7 @@
 
 namespace GCBot.Models.Backup
 {
-    public class DiscordReport : Report<uint, ChannelReport>
+    public class DiscordReport : Report<ulong, ChannelReport>
     {
         public DiscordReport(DateRange dateRange) : base(dateRange) { }
 

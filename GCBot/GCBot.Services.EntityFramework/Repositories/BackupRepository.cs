@@ -19,7 +19,7 @@ namespace GCBot.Services.EntityFramework.Repositories
             _context = context;
         }
 
-        public IEnumerable<Message> Get(
+        public IQueryable<Message> Get(
             Expression<Func<Message, bool>> filter = null,
             Func<IQueryable<Message>, IOrderedQueryable<Message>> orderBy = null,
             string includeProperties = "")
@@ -36,7 +36,7 @@ namespace GCBot.Services.EntityFramework.Repositories
                 query = query.Include(includeProperty);
             }
 
-            return orderBy != null ? orderBy(query).ToList() : query.ToList();
+            return orderBy != null ? orderBy(query) : query;
         }
 
         public int GetNumberOfMessagesByUser(DateTime date, ulong id) =>
@@ -45,29 +45,28 @@ namespace GCBot.Services.EntityFramework.Repositories
         public int GetNumberOfMessagesByChannel(DateTime date, ulong channel) =>
             _context.Messages.Count(t => t.ChannelId == channel && t.DateSent.Date == date.Date);
 
-        public IEnumerable<uint> GetAllUserIds(DateRange range) =>
+        public IQueryable<ulong> GetAllUserIds(DateRange range) =>
             _context.Messages.Select(msg => msg.SenderId).Distinct();
 
-        public IEnumerable<uint> GetAllChannelIds(DateRange range) =>
+        public IQueryable<ulong> GetAllChannelIds(DateRange range) =>
             _context.Messages.Select(msg => msg.ChannelId).Distinct();
 
-        public IEnumerable<UserMessage> GetMessagesByUser(DateRange date, ulong userId)
+        public IQueryable<UserMessage> GetMessagesByUser(DateRange date, ulong userId)
         {
             var msg = _context.Messages.Where(x => x.SenderId == userId &&  x.DateSent.Date >= date.BeginDate.Date && x.DateSent.Date <= date.EndDate.Date);
             return msg.Select(item => new UserMessage()
             {
-                Id = item.Id, Link = item.Link, SenderId = item.SenderId, Text = item.Text, DateSent = item.DateSent,
+                Link = item.Link, SenderId = item.SenderId, Text = item.Text, DateSent = item.DateSent,
                 ChannelId = item.ChannelId
             });
         }
 
-        public IEnumerable<UserMessage> GetMessagesByChannel(DateRange date, ulong channel)
+        public IQueryable<UserMessage> GetMessagesByChannel(DateRange date, ulong channel)
         {
             var msg = _context.Messages.Where(x => x.ChannelId == channel && x.DateSent.Date >= date.BeginDate.Date && x.DateSent.Date <= date.EndDate.Date);
 
             return msg.Select(item => new UserMessage()
             {
-                Id = item.Id,
                 Link = item.Link,
                 SenderId = item.SenderId,
                 Text = item.Text,
@@ -90,7 +89,6 @@ namespace GCBot.Services.EntityFramework.Repositories
         {
             await _context.Messages.AddAsync(new Message()
             {
-                Id = message.Id,
                 Link = message.Link,
                 SenderId = message.SenderId,
                 ChannelId = message.ChannelId,

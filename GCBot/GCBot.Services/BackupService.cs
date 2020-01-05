@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using GCBot.Services.Repositories;
 using GCBot.Models.Backup;
+using GCBot.Services.Services;
 
 namespace GCBot.Services
 {
@@ -19,7 +20,6 @@ namespace GCBot.Services
         {
             var message = new UserMessage()
             {
-                Id = userMessage.Id,
                 ChannelId = userMessage.ChannelId,
                 DateSent = userMessage.DateSent,
                 Link = userMessage.Link,
@@ -37,7 +37,7 @@ namespace GCBot.Services
             }
         }
 
-        public ChannelReport GenerateChannelReport(uint channelId, DateRange dateRange) =>
+        public ChannelReport GenerateChannelReport(ulong channelId, DateRange dateRange) =>
              new ChannelReport(channelId, dateRange)
                 {
                     DateRange = dateRange,
@@ -52,7 +52,7 @@ namespace GCBot.Services
                 Information = GenerateChannelReports(dateRange),
             };
 
-        public UserReport GenerateUserReport(uint userId, DateRange dateRange)
+        public UserReport GenerateUserReport(ulong userId, DateRange dateRange)
         {
             var userReport = new UserReport(userId,dateRange)
             {
@@ -70,11 +70,11 @@ namespace GCBot.Services
             return userReport;
         }
 
-        private Dictionary<uint, UserReport> GenerateUserReports(DateRange dateRange)
+        private Dictionary<ulong, UserReport> GenerateUserReports(DateRange dateRange)
         {
             var userIds = _backupRepository.GetAllUserIds(dateRange);
 
-            var dict = new Dictionary<uint,UserReport>();
+            var dict = new Dictionary<ulong, UserReport>();
 
             while (userIds.GetEnumerator().MoveNext())
             {
@@ -85,11 +85,11 @@ namespace GCBot.Services
             return dict;
         }
 
-        private Dictionary<uint, ChannelReport> GenerateChannelReports(DateRange dateRange)
+        private Dictionary<ulong, ChannelReport> GenerateChannelReports(DateRange dateRange)
         {
             var channelIds = _backupRepository.GetAllChannelIds(dateRange);
 
-            var dict = new Dictionary<uint, ChannelReport>();
+            var dict = new Dictionary<ulong, ChannelReport>();
 
             while (channelIds.GetEnumerator().MoveNext())
             {

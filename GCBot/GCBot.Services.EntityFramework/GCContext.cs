@@ -5,7 +5,6 @@ namespace GCBot.Services.EntityFramework
 {
     public class GCContext : DbContext
     {
-
         public GCContext(DbContextOptions<GCContext> options) : base(options) { }
 
         public DbSet<Message> Messages { get; set; }

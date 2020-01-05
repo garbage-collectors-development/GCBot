@@ -5,7 +5,7 @@ namespace GCBot.Models.Backup
 {
     public class UserHistory : UserReport
     {
-        public UserHistory(uint userId, DateRange dateRange) : base(userId, dateRange)
+        public UserHistory(ulong userId, DateRange dateRange) : base(userId, dateRange)
         {
             Messages = new Dictionary<DateTime, UserMessage>();
         }

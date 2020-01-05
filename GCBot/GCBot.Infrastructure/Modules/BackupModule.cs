@@ -4,6 +4,7 @@ using Discord;
 using Discord.Commands;
 using GCBot.Models.Backup;
 using GCBot.Services;
+using GCBot.Services.Services;
 
 namespace GCBot.Infrastructure.Modules
 {
