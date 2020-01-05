@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GCBot.Services.EntityFramework
 {
-    public class BackupContext : DbContext
+    public class GCContext : DbContext
     {
         private string _connectionString;
 
-        public BackupContext(string connectionString)
+        public GCContext(string connectionString)
         {
             _connectionString = connectionString;
         }

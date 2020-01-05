@@ -4,7 +4,7 @@ namespace GCBot.Models.Backup
 {
     public abstract class Report<T, TS>
     {
-        protected Report(uint discordUnitId, DateRange dateRange)
+        protected Report(DateRange dateRange, uint discordUnitId = 0)
         {
             DiscordUnitId = discordUnitId;
             DateRange = dateRange;

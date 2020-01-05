@@ -37,9 +37,6 @@ namespace GCBot.Infrastructure
                 .BuildServiceProvider();
         }
 
-        /// <summary>
-        /// Executes the startup sequence
-        /// </summary>
         public async Task RunAsync()
         {
             try
