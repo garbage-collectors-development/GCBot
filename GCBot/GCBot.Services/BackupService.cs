@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using GCBot.Services.Repositories;
 using GCBot.Models.Backup;
-using GCBot.Services.Services;
 
 namespace GCBot.Services
 {
@@ -29,6 +28,7 @@ namespace GCBot.Services
             };
             await _backupRepository.AddMessageAsync(message);
         }
+
         public async Task BackupMessagesAsync(IEnumerable<UserMessage> userMessages)
         {
             while (userMessages.GetEnumerator().MoveNext())
@@ -44,36 +44,60 @@ namespace GCBot.Services
                     DiscordUnitId = channelId,
                     Information = GenerateUserReports(dateRange)
                 };
-
-        public DiscordReport GenerateDiscordReport(uint discordId, DateRange dateRange) =>
+        
+        public DiscordReport GenerateDiscordReport(DateRange dateRange) =>
             new DiscordReport(dateRange)
             {
                 DateRange = dateRange,
-                DiscordUnitId = discordId,
-                Information = GenerateChannelReports(dateRange)
+                Information = GenerateChannelReports(dateRange),
             };
-
-        public DiscordReport GenerateDiscordReport(DateRange dateRange) =>
-            GenerateDiscordReport(0, dateRange); // this should be the default discord ID
 
         public UserReport GenerateUserReport(uint userId, DateRange dateRange)
-        { 
-            var report = new UserReport(userId,dateRange)
+        {
+            var userReport = new UserReport(userId,dateRange)
             {
-                
+                Information = new Dictionary<DateTime, int>()
             };
-            throw new NotImplementedException();
 
+            var day = dateRange.BeginDate;
+
+            while (day.Date < dateRange.EndDate.Date)
+            {
+                var count = _backupRepository.GetNumberOfMessagesByUser(day, userId);
+                userReport.Information.Add(day, count);
+                day = day.AddDays(1);
+            }
+            return userReport;
         }
 
         private Dictionary<uint, UserReport> GenerateUserReports(DateRange dateRange)
         {
-            throw new NotImplementedException();
+            var userIds = _backupRepository.GetAllUserIds(dateRange);
+
+            var dict = new Dictionary<uint,UserReport>();
+
+            while (userIds.GetEnumerator().MoveNext())
+            {
+                var userId = userIds.GetEnumerator().Current;
+                dict.Add(userId, GenerateUserReport(userId, dateRange));
+            }
+
+            return dict;
         }
 
         private Dictionary<uint, ChannelReport> GenerateChannelReports(DateRange dateRange)
         {
-            throw new NotImplementedException();
+            var channelIds = _backupRepository.GetAllChannelIds(dateRange);
+
+            var dict = new Dictionary<uint, ChannelReport>();
+
+            while (channelIds.GetEnumerator().MoveNext())
+            {
+                var channelId = channelIds.GetEnumerator().Current;
+                dict.Add(channelId, GenerateChannelReport(channelId,dateRange));
+            }
+
+            return dict;
         }
     }
 }

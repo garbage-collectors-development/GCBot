@@ -5,7 +5,6 @@ using GCBot.Services.EntityFramework;
 using GCBot.Services.EntityFramework.Repositories;
 using GCBot.Services;
 using GCBot.Services.Repositories;
-using GCBot.Services.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

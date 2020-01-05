@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using GCBot.Models.Backup;
-using GCBot.Services.Services;
+using GCBot.Services;
 
 namespace GCBot.Infrastructure.Modules
 {
@@ -49,7 +49,7 @@ namespace GCBot.Infrastructure.Modules
 
             try
             {
-                var range = GetRange(args.Length == 2 ? new[] { args[1] } : new[] { args[1], args[2] }); // haha, sorry I am a bit lazy I admit..
+                var range = GetRange(args); 
                 var isParsed = uint.TryParse(args[0], out var id);
                 if (!isParsed)
                 {
@@ -74,19 +74,28 @@ namespace GCBot.Infrastructure.Modules
 
             try
             {
-                var range = GetRange(args.Length == 2 ? new[] { args[1] } : new[] { args[1], args[2] }); 
+                var range = GetRange(args); 
+
                 var isParsed = uint.TryParse(args[0], out var id);
+
                 if (!isParsed)
                 {
                     await ReplyAsync("Channel ID is not an unsigned integer.");
                     return;
                 }
+
                 var report = _service.GenerateUserReport(id, range);
+                await SendUserReport(report);
             }
             catch (ArgumentNullException e)
             {
                 await ReplyAsync(e.Message);
             }
+        }
+
+        private async Task SendUserReport(UserReport report)
+        {
+            await ReplyAsync($"Total messages: {report.TotalMessages} from {report.DateRange.BeginDate} to {report.DateRange.EndDate}");
         }
 
         private DateRange GetRange(string[] args)
@@ -95,6 +104,8 @@ namespace GCBot.Infrastructure.Modules
 
             switch (args.Length)
             {
+                case 0:
+                    throw new ArgumentException("Input array cannot be empty to get range!");
                 case 1:
                 {
                     var isParsed = DateTime.TryParse(args[0], out var date);
@@ -106,7 +117,7 @@ namespace GCBot.Infrastructure.Modules
                     break;
                 }
 
-                case 2:
+                default:
                 {
                     var isBeginTimeParsed = DateTime.TryParse(args[0], out var beginDate);
                     var isEndTimeParsed = DateTime.TryParse(args[1], out var endDate);

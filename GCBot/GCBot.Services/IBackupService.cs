@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using GCBot.Models.Backup;
 
-namespace GCBot.Services.Services
+namespace GCBot.Services
 {
     public interface IBackupService
     {

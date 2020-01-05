@@ -61,9 +61,6 @@ namespace GCBot.Infrastructure
             new GcDatabaseInitContext(_applicationConfiguration.GetConnectionString("Database")).Database.EnsureCreated();
         }
 
-        /// <summary>
-        /// Executes the startup sequence
-        /// </summary>
         public async Task RunAsync()
         {
             try

@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29123.88
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GCBot.Container", "GCBot.Container\GCBot.Container.csproj", "{3CD67933-1E62-4E3A-A29F-0FAC0D9B6A8E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GCBot.Container", "GCBot.Container\GCBot.Container.csproj", "{3CD67933-1E62-4E3A-A29F-0FAC0D9B6A8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GCBot.Infrastructure", "GCBot.Infrastructure\GCBot.Infrastructure.csproj", "{6D1D3C60-FB2E-4BFB-9FC7-9B305B3677FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GCBot.Infrastructure", "GCBot.Infrastructure\GCBot.Infrastructure.csproj", "{6D1D3C60-FB2E-4BFB-9FC7-9B305B3677FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GCBot.Services", "GCBot.Services\GCBot.Services.csproj", "{E967A235-D8F3-4FC0-A2BA-1CE37E6A5ACC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GCBot.Services", "GCBot.Services\GCBot.Services.csproj", "{E967A235-D8F3-4FC0-A2BA-1CE37E6A5ACC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GCBot.Models", "GCBot.Models\GCBot.Models.csproj", "{367EE762-4AAA-435B-8B58-E7102E2BCA41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GCBot.Models", "GCBot.Models\GCBot.Models.csproj", "{367EE762-4AAA-435B-8B58-E7102E2BCA41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GCBot.Services.EntityFramework", "GCBot.Services.EntityFramework\GCBot.Services.EntityFramework.csproj", "{0480A50F-D30E-46F4-BA81-EF49B3EC6C47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GCBot.Services.EntityFramework", "GCBot.Services.EntityFramework\GCBot.Services.EntityFramework.csproj", "{0480A50F-D30E-46F4-BA81-EF49B3EC6C47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GCBot.Tests", "GCBot.Tests\GCBot.Tests.csproj", "{FC309DE2-4205-4C81-BE1A-E79F84C2C1AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{0480A50F-D30E-46F4-BA81-EF49B3EC6C47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0480A50F-D30E-46F4-BA81-EF49B3EC6C47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0480A50F-D30E-46F4-BA81-EF49B3EC6C47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC309DE2-4205-4C81-BE1A-E79F84C2C1AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC309DE2-4205-4C81-BE1A-E79F84C2C1AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC309DE2-4205-4C81-BE1A-E79F84C2C1AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC309DE2-4205-4C81-BE1A-E79F84C2C1AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

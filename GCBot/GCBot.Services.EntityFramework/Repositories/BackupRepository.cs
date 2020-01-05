@@ -1,21 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using GCBot.Services.EntityFramework.Entities;
 using GCBot.Services.Repositories;
 using GCBot.Models.Backup;
+using Microsoft.EntityFrameworkCore;
 
 namespace GCBot.Services.EntityFramework.Repositories
 {
     public class BackupRepository : IBackupRepository
     {
-        private readonly BackupContext _context;
+        private readonly GCContext _context;
 
-        public BackupRepository(BackupContext context)
+        public BackupRepository(GCContext context)
         {
             _context = context;
         }
+
+        public IEnumerable<Message> Get(
+            Expression<Func<Message, bool>> filter = null,
+            Func<IQueryable<Message>, IOrderedQueryable<Message>> orderBy = null,
+            string includeProperties = "")
+        {
+            IQueryable<Message> query = _context.Messages.AsQueryable();
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+
+            return orderBy != null ? orderBy(query).ToList() : query.ToList();
+        }
+
+        public int GetNumberOfMessagesByUser(DateTime date, ulong id) =>
+            _context.Messages.Count(t => t.SenderId == id && t.DateSent.Date == date.Date);
+
+        public int GetNumberOfMessagesByChannel(DateTime date, ulong channel) =>
+            _context.Messages.Count(t => t.ChannelId == channel && t.DateSent.Date == date.Date);
+
+        public IEnumerable<uint> GetAllUserIds(DateRange range) =>
+            _context.Messages.Select(msg => msg.SenderId).Distinct();
+
+        public IEnumerable<uint> GetAllChannelIds(DateRange range) =>
+            _context.Messages.Select(msg => msg.ChannelId).Distinct();
 
         public IEnumerable<UserMessage> GetMessagesByUser(DateRange date, ulong userId)
         {
@@ -75,8 +109,9 @@ namespace GCBot.Services.EntityFramework.Repositories
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.InnerException);
+                Console.WriteLine(e.InnerException); // have to add a logger here
             }
         }
+
     }
 }
