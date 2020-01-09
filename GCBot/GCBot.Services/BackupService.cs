@@ -76,9 +76,8 @@ namespace GCBot.Services
 
             var dict = new Dictionary<ulong, UserReport>();
 
-            while (userIds.GetEnumerator().MoveNext())
+            foreach (var userId in userIds)
             {
-                var userId = userIds.GetEnumerator().Current;
                 dict.Add(userId, GenerateUserReport(userId, dateRange));
             }
 
@@ -91,10 +90,9 @@ namespace GCBot.Services
 
             var dict = new Dictionary<ulong, ChannelReport>();
 
-            while (channelIds.GetEnumerator().MoveNext())
+            foreach (var channelId in channelIds)
             {
-                var channelId = channelIds.GetEnumerator().Current;
-                dict.Add(channelId, GenerateChannelReport(channelId,dateRange));
+                dict.Add(channelId, GenerateChannelReport(channelId, dateRange));
             }
 
             return dict;

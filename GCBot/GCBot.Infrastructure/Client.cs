@@ -12,6 +12,7 @@ using Discord.WebSocket;
 using GCBot.Models;
 using GCBot.Services.Services;
 using GCBot.Infrastructure.BotConfiguration;
+using GCBot.Services.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -55,6 +56,8 @@ namespace GCBot.Infrastructure
             
             _messageHandler = new MessageHandler(_services, _socketClient, _commands, _botConfigStore);
             ((EFConfigStore<GcBotConfig, GcGuild, GcChannel, GcUser>) _botConfigStore).Services = _services;
+            
+            new GCContext(_applicationConfiguration.GetConnectionString("Database")).Database.EnsureCreated();
         }
 
         public async Task RunAsync()
